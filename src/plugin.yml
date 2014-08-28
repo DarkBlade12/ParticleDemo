@@ -1,0 +1,11 @@
+name: ParticleDemo
+version: 1.0.0
+author: DarkBlade12
+website: http://dev.bukkit.org/profiles/DarkBladee12
+
+main: com.darkblade12.particledemo.ParticleDemo
+
+commands:
+  particle:
+    usage: /<command> help
+    aliases: [particledemo, pd]
