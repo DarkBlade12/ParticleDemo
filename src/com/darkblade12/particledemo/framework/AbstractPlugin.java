@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class AbstractPlugin extends JavaPlugin {
-	private final Logger logger;
+	private Logger logger;
 
 	public AbstractPlugin() {
 		logger = getLogger();

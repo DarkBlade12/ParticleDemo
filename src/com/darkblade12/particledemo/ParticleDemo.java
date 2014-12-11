@@ -2,17 +2,15 @@ package com.darkblade12.particledemo;
 
 import com.darkblade12.particledemo.framework.AbstractPlugin;
 import com.darkblade12.particledemo.framework.CommandHandler;
-import com.darkblade12.particledemo.framework.commands.BlockCommand;
-import com.darkblade12.particledemo.framework.commands.DustCommand;
-import com.darkblade12.particledemo.framework.commands.IconCommand;
+import com.darkblade12.particledemo.framework.commands.DisplayCommand;
 import com.darkblade12.particledemo.framework.commands.NamesCommand;
-import com.darkblade12.particledemo.framework.commands.NormalCommand;
 
 public final class ParticleDemo extends AbstractPlugin {
 	private final CommandHandler<ParticleDemo> commandHandler;
 
 	public ParticleDemo() {
-		commandHandler = new CommandHandler<ParticleDemo>(this, "particle", 4, new NamesCommand(), new NormalCommand(), new IconCommand(), new BlockCommand(), new DustCommand());
+		super();
+		commandHandler = new CommandHandler<ParticleDemo>(this, "particle", 4, new NamesCommand(), new DisplayCommand());
 	}
 
 	@Override
