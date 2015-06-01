@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.darkblade12.particledemo.ParticleDemo;
 import com.darkblade12.particledemo.framework.AbstractCommand;
@@ -15,7 +16,7 @@ import com.darkblade12.particledemo.particle.ParticleEffect.ItemData;
 import com.darkblade12.particledemo.particle.ParticleEffect.ParticleData;
 import com.darkblade12.particledemo.particle.ParticleEffect.ParticleProperty;
 
-public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
+public final class DisplayDirectionCommand extends AbstractCommand<ParticleDemo> {
 	@Override
 	public void execute(ParticleDemo plugin, CommandHandler<ParticleDemo> handler, CommandSender sender, String label, String[] parameters) {
 		ParticleEffect effect = ParticleEffect.fromName(parameters[0]);
@@ -27,41 +28,33 @@ public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
 			plugin.displayMessage(sender, "§cThis particle effect is not supported by your server version!");
 			return;
 		}
-		String parameterOffsetX = parameters[1];
-		float offsetX;
-		if (parameterOffsetX.equalsIgnoreCase("random")) {
-			offsetX = (float) Math.random();
-		} else {
-			try {
-				offsetX = Float.parseFloat(parameterOffsetX);
-			} catch (Exception exception) {
-				plugin.displayMessage(sender, "§6" + parameterOffsetX + " §cisn't a valid parameter for §e<offsetX>§c!");
-				return;
-			}
+		if (!effect.hasProperty(ParticleProperty.DIRECTIONAL)) {
+			plugin.displayMessage(sender, "§cThis particle effect is not directional!");
+			return;
 		}
-		String parameterOffsetY = parameters[2];
-		float offsetY;
-		if (parameterOffsetY.equalsIgnoreCase("random")) {
-			offsetY = (float) Math.random();
-		} else {
-			try {
-				offsetY = Float.parseFloat(parameterOffsetY);
-			} catch (Exception exception) {
-				plugin.displayMessage(sender, "§6" + parameterOffsetY + " §cisn't a valid parameter for §e<offsetY>§c!");
-				return;
-			}
+		String parameterVectorX = parameters[1];
+		float vectorX;
+		try {
+			vectorX = Float.parseFloat(parameterVectorX);
+		} catch (Exception exception) {
+			plugin.displayMessage(sender, "§6" + parameterVectorX + " §cisn't a valid parameter for §e<vectorX>§c!");
+			return;
 		}
-		String parameterOffsetZ = parameters[3];
-		float offsetZ;
-		if (parameterOffsetZ.equalsIgnoreCase("random")) {
-			offsetZ = (float) Math.random();
-		} else {
-			try {
-				offsetZ = Float.parseFloat(parameterOffsetZ);
-			} catch (Exception exception) {
-				plugin.displayMessage(sender, "§6" + parameterOffsetZ + " §cisn't a valid parameter for §e<offsetZ>§c!");
-				return;
-			}
+		String parameterVectorY = parameters[2];
+		float vectorY;
+		try {
+			vectorY = Float.parseFloat(parameterVectorY);
+		} catch (Exception exception) {
+			plugin.displayMessage(sender, "§6" + parameterVectorY + " §cisn't a valid parameter for §e<vectorY>§c!");
+			return;
+		}
+		String parameterVectorZ = parameters[3];
+		float vectorZ;
+		try {
+			vectorZ = Float.parseFloat(parameterVectorZ);
+		} catch (Exception exception) {
+			plugin.displayMessage(sender, "§6" + parameterVectorZ + " §cisn't a valid parameter for §e<vectorZ>§c!");
+			return;
 		}
 		String parameterSpeed = parameters[4];
 		float speed;
@@ -75,19 +68,7 @@ public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
 			plugin.displayMessage(sender, "§cThe value of parameter §e<speed> §ccan't be lower than 0!");
 			return;
 		}
-		String parameterAmount = parameters[5];
-		int amount;
-		try {
-			amount = Integer.parseInt(parameterAmount);
-		} catch (Exception exception) {
-			plugin.displayMessage(sender, "§6" + parameterAmount + " §cisn't a valid parameter for §e<amount>§c!");
-			return;
-		}
-		if (amount < 1) {
-			plugin.displayMessage(sender, "§cThe value of parameter §e<amount> §ccan't be lower than 1!");
-			return;
-		}
-		String parameterRange = parameters[6];
+		String parameterRange = parameters[5];
 		double range;
 		try {
 			range = Double.parseDouble(parameterRange);
@@ -101,12 +82,12 @@ public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
 		}
 		ParticleData particleData = null;
 		boolean requiresData = effect.hasProperty(ParticleProperty.REQUIRES_DATA);
-		if (parameters.length == 8) {
+		if (parameters.length == 7) {
 			if (!requiresData) {
 				plugin.displayMessage(sender, "§cThis particle effect doesn't require additional data!");
 				return;
 			}
-			String parameterData = parameters[7];
+			String parameterData = parameters[6];
 			int id;
 			byte data;
 			try {
@@ -141,21 +122,21 @@ public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
 			return;
 		}
 		if (requiresData) {
-			effect.display(particleData, offsetX, offsetY, offsetZ, speed, amount, center, range);
+			effect.display(particleData, new Vector(vectorX, vectorY, vectorZ), speed, center, range);
 		} else {
-			effect.display(offsetX, offsetY, offsetZ, speed, amount, center, range);
+			effect.display(new Vector(vectorX, vectorY, vectorZ), speed, center, range);
 		}
 		plugin.displayMessage(sender, "§aA particle effect with the specified parameters was displayed.");
 	}
 
 	@Override
 	public String getName() {
-		return "display";
+		return "displaydirection";
 	}
 
 	@Override
 	public String[] getParameters() {
-		return new String[] { "<name>", "<offsetX>", "<offsetY>", "<offsetZ>", "<speed>", "<amount>", "<range>", "[id:data]" };
+		return new String[] { "<name>", "<vectorX>", "<vectorY>", "<vectorZ>", "<speed>", "<range>", "[id:data]" };
 	}
 
 	@Override
@@ -170,6 +151,6 @@ public final class DisplayCommand extends AbstractCommand<ParticleDemo> {
 
 	@Override
 	public String getDescription() {
-		return "Displays a particle effect with the specified parameters (uses player as center)";
+		return "Displays a particle which flies into a certain direction (uses player as center)";
 	}
 }

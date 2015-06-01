@@ -1,6 +1,7 @@
 package com.darkblade12.particledemo.framework.commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.darkblade12.particledemo.ParticleDemo;
 import com.darkblade12.particledemo.framework.AbstractCommand;
@@ -17,6 +18,8 @@ public final class NamesCommand extends AbstractCommand<ParticleDemo> {
 			list = getListString();
 		}
 		plugin.displayMessage(sender, "§aAll particle effect names: " + list);
+		Player player = (Player) sender;
+		ParticleEffect.HEART.display(0, 0, 0, 1, 1, player.getLocation().add(0, 2.2, 0), 50);
 	}
 
 	private String getListString() {

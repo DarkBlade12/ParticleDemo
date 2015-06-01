@@ -2,7 +2,9 @@ package com.darkblade12.particledemo;
 
 import com.darkblade12.particledemo.framework.AbstractPlugin;
 import com.darkblade12.particledemo.framework.CommandHandler;
+import com.darkblade12.particledemo.framework.commands.DisplayColorCommand;
 import com.darkblade12.particledemo.framework.commands.DisplayCommand;
+import com.darkblade12.particledemo.framework.commands.DisplayDirectionCommand;
 import com.darkblade12.particledemo.framework.commands.NamesCommand;
 
 public final class ParticleDemo extends AbstractPlugin {
@@ -10,7 +12,7 @@ public final class ParticleDemo extends AbstractPlugin {
 
 	public ParticleDemo() {
 		super();
-		commandHandler = new CommandHandler<ParticleDemo>(this, "particle", 4, new NamesCommand(), new DisplayCommand());
+		commandHandler = new CommandHandler<ParticleDemo>(this, "particle", 4, new NamesCommand(), new DisplayCommand(), new DisplayColorCommand(), new DisplayDirectionCommand());
 	}
 
 	@Override
